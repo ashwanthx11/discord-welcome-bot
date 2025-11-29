@@ -1,4 +1,16 @@
+// index.js
+require('dotenv').config();
+const express = require('express');
 const { Client, GatewayIntentBits, EmbedBuilder } = require('discord.js');
+
+const app = express();
+
+// Basic health route for keep-alive pings
+app.get('/', (req, res) => res.send('OK'));
+
+// Start web server on the port Render sets
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Web server listening on port ${PORT}`));
 
 const client = new Client({
     intents: [
@@ -15,9 +27,7 @@ client.once('ready', () => {
 
 // Welcome message
 client.on('guildMemberAdd', member => {
-    // Use the channel ID directly
     const welcomeChannel = member.guild.channels.cache.get("1434774019655208960");
-
     if (!welcomeChannel) return;
 
     const embed = new EmbedBuilder()
@@ -29,6 +39,8 @@ client.on('guildMemberAdd', member => {
 
     welcomeChannel.send({ embeds: [embed] });
 });
+
 // Login bot
 client.login(process.env.TOKEN);
+
 
